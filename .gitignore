@@ -1,4 +1,4 @@
-.bxrc
-.ini
-.img
-.bin
+*.bxrc
+*.ini
+*.img
+*.bin

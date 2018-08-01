@@ -44,26 +44,26 @@ inline void lgdt(void* base, WORD size)
 
 inline QWORD rdmsr(DWORD msr)
 {
-	DWORD low, high;
-	asm volatile (
-		"rdmsr"
-		: "=a"(low), "=d"(high)
-		: "c"(msr)
-	);
-	return ((QWORD)high << 32) | low;
+    DWORD low, high;
+    asm volatile (
+        "rdmsr"
+        : "=a"(low), "=d"(high)
+        : "c"(msr)
+    );
+    return ((QWORD)high << 32) | low;
 }
 
 /*---------------------------------------------------------------------------------------------------*/
 
 inline void wrmsr(DWORD msr, QWORD value)
 {
-	DWORD low = value & 0xFFFFFFFF;
-	DWORD high = value >> 32;
-	asm volatile (
-		"wrmsr"
-		:
-		: "c"(msr), "a"(low), "d"(high)
-	);
+    DWORD low = value & 0xFFFFFFFF;
+    DWORD high = value >> 32;
+    asm volatile (
+        "wrmsr"
+        :
+        : "c"(msr), "a"(low), "d"(high)
+    );
 }
 
 /*---------------------------------------------------------------------------------------------------*/
@@ -92,7 +92,7 @@ inline BYTE inb(WORD port)
 
 inline void wrCR0(QWORD val)
 {
-    asm volatile ( "mov 	CR0, %0"::"r"(val) );
+    asm volatile ( "mov     CR0, %0"::"r"(val) );
 }
 
 /*---------------------------------------------------------------------------------------------------*/
@@ -100,14 +100,14 @@ inline void wrCR0(QWORD val)
 inline QWORD rdCR0()
 {
     QWORD ret;
-    asm volatile ( "mov 	%0, CR0":"=r"(ret));
+    asm volatile ( "mov     %0, CR0":"=r"(ret));
     return ret;
 }
 /*---------------------------------------------------------------------------------------------------*/
 
 inline void wrCR4(QWORD val)
 {
-    asm volatile ( "mov 	CR4, %0"::"r"(val) );
+    asm volatile ( "mov     CR4, %0"::"r"(val) );
 }
 
 /*---------------------------------------------------------------------------------------------------*/
@@ -115,7 +115,7 @@ inline void wrCR4(QWORD val)
 inline QWORD rdCR4()
 {
     QWORD ret;
-    asm volatile ( "mov 	%0, CR4":"=r"(ret));
+    asm volatile ( "mov     %0, CR4":"=r"(ret));
     return ret;
 }
 
@@ -123,87 +123,87 @@ inline QWORD rdCR4()
 
 inline bool vmxon(void* addr)
 {
-	QWORD flags;
-    asm volatile( "vmxon 	%1\r\n" 
-				  "pushf\n\t"
-				  "pop %0"
-				  : "=g"(flags) 
-				  : "m"(addr)); 
-	
-    return flags & ((1UL << 1) | 		//CF
-					(1UL << 6));		//ZF
+    QWORD flags;
+    asm volatile( "vmxon     %1\r\n" 
+                  "pushf\n\t"
+                  "pop %0"
+                  : "=g"(flags) 
+                  : "m"(addr)); 
+    
+    return flags & ((1UL << 1) |         //CF
+                    (1UL << 6));         //ZF
 }
 
 /*---------------------------------------------------------------------------------------------------*/
 
 inline bool vmclear(void* addr)
 {
-	QWORD flags;
-    asm volatile( "vmclear 	%1\r\n" 
-		  "pushf\n\t"
-		  "pop %0"
-		  : "=g"(flags) 
-		  : "m"(addr)); 
-	
-    return flags & ((1UL << 1) | 		//CF
-					(1UL << 6));		//ZF
+    QWORD flags;
+    asm volatile( "vmclear     %1\r\n" 
+          "pushf\n\t"
+          "pop %0"
+          : "=g"(flags) 
+          : "m"(addr)); 
+    
+    return flags & ((1UL << 1) |         //CF
+                    (1UL << 6));         //ZF
 }
 
 /*---------------------------------------------------------------------------------------------------*/
 
 inline bool vmptrld(void* addr)
 {
-	QWORD flags;
-    asm volatile( "vmptrld 	%1\r\n" 
-				  "pushf\n\t"
-				  "pop %0"
-				  : "=g"(flags) 
-				  : "m"(addr)); 
-	
-    return flags & ((1UL << 1) | 		//CF
-					(1UL << 6));		//ZF
+    QWORD flags;
+    asm volatile( "vmptrld     %1\r\n" 
+                  "pushf\n\t"
+                  "pop %0"
+                  : "=g"(flags) 
+                  : "m"(addr)); 
+    
+    return flags & ((1UL << 1) |         //CF
+                    (1UL << 6));         //ZF
 }
 
 /*---------------------------------------------------------------------------------------------------*/
 
 inline bool vmwrite(QWORD index, QWORD value)
 {
-	QWORD flags;
-    asm volatile( "vmwrite 	%1, %2\r\n" 
-				  "pushf\n\t"
-				  "pop %0"
-				  : "=g"(flags) 
-				  : "c"(index), "a"(value)); 
-	
-    return flags & ((1UL << 1) | 		//CF
-					(1UL << 6));		//ZF
+    QWORD flags;
+    asm volatile( "vmwrite     %1, %2\r\n" 
+                  "pushf\n\t"
+                  "pop %0"
+                  : "=g"(flags) 
+                  : "c"(index), "a"(value)); 
+    
+    return flags & ((1UL << 1) |         //CF
+                    (1UL << 6));         //ZF
 }
 
 /*---------------------------------------------------------------------------------------------------*/
 
 inline QWORD vmread(QWORD index)
 {
-	QWORD ret;
-    asm volatile( "vmread 	%0, %1\r\n" 
-				  : "=r"(ret)
-				  : "c"(index)
-				); 
-	
-    return ret;		
+    QWORD ret;
+    asm volatile( "vmread     %0, %1\r\n" 
+                  : "=r"(ret)
+                  : "c"(index)
+                ); 
+    
+    return ret;        
 }
 
 /*---------------------------------------------------------------------------------------------------*/
 
 inline void VMLaunch()
 {
-	asm volatile( "mov     eax, 0x0000AA55\r\n"
-				  "mov     ecx, 0x00090000\r\n"
-				  "mov     edx, 0x80\r\n"
-				  "mov     ebx, 0x00\r\n"
-				  "mov     ebp, 0x00\r\n"
-				  "mov     esi, 0x000E0000\r\n"
-				  "mov     edi, 0x0000FFAC\r\n"
-				  
-				  "vmlaunch\r\n"
-	);
+    asm volatile( "mov     eax, 0x0000AA55\r\n"
+                  "mov     ecx, 0x00090000\r\n"
+                  "mov     edx, 0x80\r\n"
+                  "mov     ebx, 0x00\r\n"
+                  "mov     ebp, 0x00\r\n"
+                  "mov     esi, 0x000E0000\r\n"
+                  "mov     edi, 0x0000FFAC\r\n"
+                  
+                  "vmlaunch\r\n"
+    );
 }

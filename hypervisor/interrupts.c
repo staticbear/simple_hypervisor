@@ -6,6 +6,6 @@
 
 void common_handler()
 {
-	SerialPrintStr64("interrupt occurred!");
+    SerialPrintStr64("interrupt occurred!");
     return;
 }

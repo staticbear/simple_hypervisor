@@ -1,3 +1,3 @@
 
-PDPTE_CNT		equ	8
+PDPTE_CNT        equ    8
 

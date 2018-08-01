@@ -1,4 +1,4 @@
-Simple hypervisor with using Intel VMX, written on pure C with ASM inlines. Compiled with GCC 7.3.0<br/>
+Simple hypervisor with using Intel VMX, written on pure C with ASM inlines. Compiled with GCC 7.3.0 and FASM<br/>
 
 Features:<br/>
 - Tiny size
